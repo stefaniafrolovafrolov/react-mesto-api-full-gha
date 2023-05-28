@@ -1,0 +1,15 @@
+/*.popup__image-container {
+  position: relative;
+  position: absolute;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-width: 75vw;
+  height: 75vh;
+}*/
+
+.popup__image-container {
+  margin: 0;
+  position: absolute;
+}

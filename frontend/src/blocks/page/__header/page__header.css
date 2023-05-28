@@ -1,0 +1,13 @@
+.page__header {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (max-width: 320px) {
+  .page__header {
+    margin: 0;
+  }
+}

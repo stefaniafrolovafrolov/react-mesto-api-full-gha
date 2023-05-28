@@ -1,0 +1,15 @@
+.element {
+  margin: 0;
+  padding: 0;
+  height: 361px;
+  max-width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-sizing: border-box;
+  position: relative;
+  transition: 0.9s ease-in-out;
+}
+
+.element:hover {
+  transform: scale(1.08);
+}
