@@ -95,7 +95,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "https://api.milinova.nomoredomains.rocks/",
+  baseUrl: "http://api.milinova.nomoredomains.rocks/",
   headers: {
     "Content-Type": "application/json",
     //    authorization: "4efae440-5715-4ca9-8417-962742ac588e",
