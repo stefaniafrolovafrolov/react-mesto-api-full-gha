@@ -1,1 +1,1 @@
-# react-mesto-api-full-gha-vadim
+# react-mesto-api-full-gha
