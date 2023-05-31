@@ -1,4 +1,3 @@
-//const BASE_URL = "https://auth.milinova.nomoredomains.rocks"
 const BASE_URL = "https://api.milinova.nomoredomains.rocks"
 
 function checkResponse(res) {
