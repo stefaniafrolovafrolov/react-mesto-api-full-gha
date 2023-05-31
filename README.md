@@ -10,10 +10,8 @@
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+- IP 51.250.120.183
 
-Frontend https://...
+- Frontend https://milinova.nomoredomains.rocks
 
-Backend https://...
-
-
+- Backend https://api.milinova.nomoredomains.rocks
