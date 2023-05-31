@@ -20,7 +20,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://stefaniafrolovafrolov.github.io/react-mesto-auth/",
+  "homepage": "https://milinova.nomoredomains.rocks/",
   "eslintConfig": {
     "extends": [
       "react-app",
