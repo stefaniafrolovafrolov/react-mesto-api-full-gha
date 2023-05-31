@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { SECRET_SIGNING_KEY } = require('../utils/constants');
+const { NODE_ENV, SECRET_SIGNING_KEY } = require('../utils/constants');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
@@ -11,14 +11,11 @@ const InaccurateDataError = require('../errors/InaccurateDataError');
 // регистрация пользователя
 function registrationUser(req, res, next) {
   const {
-    email,
-    password,
-    name,
-    about,
-    avatar,
+    email, password, name, about, avatar,
   } = req.body;
 
-  bcrypt.hash(password, 10)
+  bcrypt
+    .hash(password, 10)
     .then((hash) => User.create({
       email,
       password: hash,
@@ -39,9 +36,17 @@ function registrationUser(req, res, next) {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError('Пользователь с таким электронным адресом уже зарегистрирован'));
+        next(
+          new ConflictError(
+            'Пользователь с таким электронным адресом уже зарегистрирован',
+          ),
+        );
       } else if (err.name === 'ValidationError') {
-        next(new InaccurateDataError('Переданы некорректные данные при регистрации пользователя'));
+        next(
+          new InaccurateDataError(
+            'Переданы некорректные данные при регистрации пользователя',
+          ),
+        );
       } else {
         next(err);
       }
@@ -52,17 +57,16 @@ function registrationUser(req, res, next) {
 function loginUser(req, res, next) {
   const { email, password } = req.body;
 
-  User
-    .findUserByCredentials(email, password)
+  User.findUserByCredentials(email, password)
     .then(({ _id: userId }) => {
       if (userId) {
         const token = jwt.sign(
           { userId },
-          SECRET_SIGNING_KEY,
+          NODE_ENV === 'production' ? SECRET_SIGNING_KEY : 'dev-secret',
           { expiresIn: '7d' },
         );
 
-        return res.send({ _id: token });
+        return res.send({ token });
       }
 
       throw new UnauthorizedError('Неправильные почта или пароль');
@@ -72,8 +76,7 @@ function loginUser(req, res, next) {
 
 // пользователи:
 function getUsers(_, res, next) {
-  User
-    .find({})
+  User.find({})
     .then((users) => res.send({ users }))
     .catch(next);
 }
@@ -82,8 +85,7 @@ function getUsers(_, res, next) {
 function getUserId(req, res, next) {
   const { id } = req.params;
 
-  User
-    .findById(id)
+  User.findById(id)
 
     .then((user) => {
       if (user) return res.send({ user });
@@ -103,8 +105,7 @@ function getUserId(req, res, next) {
 function getCurrentUserInfo(req, res, next) {
   const { userId } = req.user;
 
-  User
-    .findById(userId)
+  User.findById(userId)
     .then((user) => {
       if (user) return res.send({ user });
 
@@ -124,18 +125,17 @@ function editProfileUserInfo(req, res, next) {
   const { name, about } = req.body;
   const { userId } = req.user;
 
-  User
-    .findByIdAndUpdate(
-      userId,
-      {
-        name,
-        about,
-      },
-      {
-        new: true,
-        runValidators: true,
-      },
-    )
+  User.findByIdAndUpdate(
+    userId,
+    {
+      name,
+      about,
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
     .then((user) => {
       if (user) return res.send({ user });
 
@@ -143,7 +143,11 @@ function editProfileUserInfo(req, res, next) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new InaccurateDataError('Переданы некорректные данные при обновлении профиля'));
+        next(
+          new InaccurateDataError(
+            'Переданы некорректные данные при обновлении профиля',
+          ),
+        );
       } else {
         next(err);
       }
@@ -155,17 +159,16 @@ function updateProfileUserAvatar(req, res, next) {
   const { avatar } = req.body;
   const { userId } = req.user;
 
-  User
-    .findByIdAndUpdate(
-      userId,
-      {
-        avatar,
-      },
-      {
-        new: true,
-        runValidators: true,
-      },
-    )
+  User.findByIdAndUpdate(
+    userId,
+    {
+      avatar,
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
     .then((user) => {
       if (user) return res.send({ user });
 
@@ -173,7 +176,11 @@ function updateProfileUserAvatar(req, res, next) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new InaccurateDataError('Переданы некорректные данные при обновлении профиля пользователя'));
+        next(
+          new InaccurateDataError(
+            'Переданы некорректные данные при обновлении профиля пользователя',
+          ),
+        );
       } else {
         next(err);
       }

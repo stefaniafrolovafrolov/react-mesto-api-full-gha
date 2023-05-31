@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 
 const limiter = require('./middlewares/rateLimiter');
+const cors = require('./middlewares/cors');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const routeSignup = require('./routes/signup');
 const routeSignin = require('./routes/signin');
@@ -38,12 +40,17 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(requestLogger);
+app.use(cors);
+
 app.use(limiter);
 
 app.use('/', routeSignup);
 app.use('/', routeSignin);
 
 app.use(auth);
+
+app.use(errorLogger);
 
 app.use('/users', routeUsers);
 app.use('/cards', routeCards);
