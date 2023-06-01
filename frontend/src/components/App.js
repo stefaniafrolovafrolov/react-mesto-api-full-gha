@@ -9,12 +9,7 @@ import PopupConfirmation from "../components/PopupConfirmation"
 import ImagePopup from "../components/ImagePopup"
 import { CurrentUserContext } from "../contexts/CurrentUserContext"
 import api from "../utils/Api"
-import {
-  Route,
-  Switch,
-  Redirect,
-  useHistory,
-} from "react-router-dom"
+import { Route, Switch, Redirect, useHistory } from "react-router-dom"
 import ProtectedRoute from "./ProtectedRoute"
 import Register from "./Register"
 import Login from "./Login"
@@ -41,27 +36,15 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true)
-    api
-      .getRealUserInfo()
-      .then((profileInfo) => setCurrentUser(profileInfo))
-      .catch((error) => console.log(`Ошибка: ${error}`))
-
-    api
-      .getInitialCards()
-      .then((data) => {
-        setCards(
-          data.map((card) => ({
-            _id: card._id,
-            name: card.name,
-            link: card.link,
-            likes: card.likes,
-            owner: card.owner,
-          }))
-        )
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`))
-      .finally(() => setIsLoading(false))
-  }, [])
+    isLoggedIn &&
+      Promise.all([api.getRealUserInfo(), api.getInitialCards()])
+        .then(([profileInfo, cards]) => {
+          setCurrentUser(profileInfo)
+          setCards(cards.reverse())
+        })
+        .catch((error) => console.log(`Ошибка: ${error}`))
+        .finally(() => setIsLoading(false))
+  }, [isLoggedIn])
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt")
