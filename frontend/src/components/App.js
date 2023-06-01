@@ -26,7 +26,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [cards, setCards] = useState([])
-
+  const [dataLoadingError, setDataLoadingError] = useState("")
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [email, setEmail] = useState("")
   const history = useHistory()
@@ -40,18 +40,11 @@ function App() {
       Promise.all([api.getRealUserInfo(), api.getInitialCards()])
         .then(([profileInfo, cards]) => {
           setCurrentUser(profileInfo)
-          setCards(
-            cards.map((card) => ({
-              _id: card._id,
-              name: card.name,
-              link: card.link,
-              likes: card.likes,
-              owner: card.owner,
-            }))
-          )
-        
+          setCards(cards)
         })
-        .catch((error) => console.log(`Ошибка: ${error}`))
+        .catch((error) => {
+          setDataLoadingError(`Что-то пошло не так... (${error})`)
+        })
         .finally(() => setIsLoading(false))
   }, [isLoggedIn])
 
@@ -264,6 +257,7 @@ function App() {
               cards={cards}
               component={Main}
               isLoading={isLoading}
+              dataLoadingError={dataLoadingError}
             />
             <Route path="/sign-in">
               <Login onLogin={handleLoginSubmit} />
