@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const { NODE_ENV, SECRET_SIGNING_KEY } = require('../utils/constants');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 
-module.exports = (req, _, next) => {
+module.exports = (req, res, next) => {
   const { authorization } = req.headers;
   const bearer = 'Bearer ';
   const errorMsg = 'Неправильные почта или пароль';
