@@ -40,7 +40,16 @@ function App() {
       Promise.all([api.getRealUserInfo(), api.getInitialCards()])
         .then(([profileInfo, cards]) => {
           setCurrentUser(profileInfo)
-          setCards(cards.reverse())
+          setCards(
+            cards.map((card) => ({
+              _id: card._id,
+              name: card.name,
+              link: card.link,
+              likes: card.likes,
+              owner: card.owner,
+            }))
+          )
+        
         })
         .catch((error) => console.log(`Ошибка: ${error}`))
         .finally(() => setIsLoading(false))
@@ -48,7 +57,7 @@ function App() {
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt")
-
+    console.log(jwt)
     if (jwt) {
       auth
         .checkToken(jwt)
