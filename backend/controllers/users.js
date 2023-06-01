@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -73,7 +74,7 @@ function loginUser(req, res, next) {
     })
     .catch(next);
 }
-
+console.log(process.env.NODE_ENV);
 // пользователи:
 function getUsers(_, res, next) {
   User.find({})
