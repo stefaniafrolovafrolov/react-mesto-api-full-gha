@@ -1,7 +1,5 @@
 [![Статус тестов](../../actions/workflows/tests.yml/badge.svg)](../../actions/workflows/tests.yml)
 
-[![Статус тестов](../../actions/workflows/tests.yml/badge.svg)](../../actions/workflows/tests.yml)
-
 # Учебный проект: "react-mesto-api-full-gha" 
 
 ![Image alt](https://github.com/stefaniafrolovafrolov/react-mesto-api-full-gha/blob/project_15/Screenshot_1917.png)
