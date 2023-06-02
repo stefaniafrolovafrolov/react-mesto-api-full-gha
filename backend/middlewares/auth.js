@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const jwt = require('jsonwebtoken');
 
 const { SECRET_SIGNING_KEY } = require('../utils/constants');
