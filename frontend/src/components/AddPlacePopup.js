@@ -8,8 +8,8 @@ function AddPlacePopup({
   isOpen,
   onCloseOverlay,
 }) {
-  const [placeName, setPlaceName] = useState("")
-  const [placeLink, setPlaceLink] = useState("")
+  const [name, setPlaceName] = useState("")
+  const [link, setPlaceLink] = useState("")
 
   useEffect(() => {
     setPlaceName("")
@@ -19,8 +19,8 @@ function AddPlacePopup({
   function handleSubmit(e) {
     e.preventDefault()
     onAddPlace({
-      name: placeName,
-      link: placeLink,
+      name: name,
+      link: link,
     })
   }
 
@@ -48,7 +48,7 @@ function AddPlacePopup({
           id="nameInputNew"
           name="name"
           type="text"
-          value={placeName}
+          value={name}
           onChange={handleChangePlaceName}
           placeholder="Название"
           minLength="2"
@@ -63,7 +63,7 @@ function AddPlacePopup({
           id="linkInputNew"
           name="link"
           type="url"
-          value={placeLink}
+          value={link}
           onChange={handleChangePlaceLink}
           placeholder="Ссылка на картинку"
           required

@@ -34,14 +34,7 @@ function App() {
   const [isSuccess, setIsSuccess] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  useEffect(() => {
-    Promise.all([api.getRealUserInfo(), api.getInitialCards()])
-      .then(([profileInfo, cards]) => {
-        setCurrentUser(profileInfo)
-        setCards(cards)
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`))
-  }, [])
+ 
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt")
@@ -51,7 +44,7 @@ function App() {
         .checkToken(jwt)
         .then((res) => {
           setIsLoggedIn(true)
-          setEmail(res.data.email)
+          setEmail(res.email)
           history.push("/")
         })
         .catch((err) => {
@@ -59,9 +52,20 @@ function App() {
             console.log("401 — Токен не передан или передан не в том формате")
           }
           console.log("401 — Переданный токен некорректен")
+          /*console.log(err.status, err.message, err.stack)*/
         })
     }
   }, [history])
+
+  useEffect(() => {
+    Promise.all([api.getRealUserInfo(), api.getInitialCards()])
+      .then(([profileInfo, cards]) => {
+        setCurrentUser(profileInfo)
+        setCards(cards)
+        
+      })
+      .catch((error) => console.log(`Ошибка: ${error}`))
+  }, [])
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false)
@@ -126,13 +130,13 @@ function App() {
       .finally(() => setIsLoading(false))
   }
 
-  function handleAddPlaceSubmit(data) {
+  function handleAddPlaceSubmit(card) {
     setIsLoading(true)
     api
-      .addNewCard(data)
+      .addNewCard(card)
       .then((newCard) => {
         setCards([newCard, ...cards])
-        console.log(cards)
+       /* console.log(cards)*/
         closeAllPopups()
       })
       .catch((error) => console.log(`Ошибка: ${error}`))

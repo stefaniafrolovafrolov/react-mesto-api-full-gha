@@ -10,6 +10,8 @@ function EditProfilePopup({
   onCloseOverlay,
 }) {
   const currentUser = React.useContext(CurrentUserContext)
+  
+ 
   const [about, setAbout] = useState("")
   const [name, setName] = useState("")
 

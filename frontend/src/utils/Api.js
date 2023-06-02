@@ -33,6 +33,7 @@ class Api {
 
   // Метод редактирование профиля
   async editProfileUserInfo(data) {
+    /*console.log(data)*/
     const response = await fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
@@ -45,11 +46,11 @@ class Api {
   }
 
   // Метод добавления новой карточки с сервера
-  async addNewCard(data) {
+  async addNewCard(card) {
     const response = await fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
-      body: JSON.stringify(data),
+      body: JSON.stringify({ name: card.name, link: card.link }),
     })
     return this._handleSendingRequest(response)
   }
@@ -95,10 +96,11 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "https://api.milinova.nomoredomains.rocks",
+  /* baseUrl: "https://api.milinova.nomoredomains.rocks",*/
+  baseUrl: "http://localhost:3000",
   headers: {
     "Content-Type": "application/json",
-     authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    authorization: `Bearer ${localStorage.getItem("jwt")}`,
   },
 })
 
@@ -109,6 +111,5 @@ const api = new Api({
     "Content-Type": "application/json",
   },
 })*/
-
 
 export default api

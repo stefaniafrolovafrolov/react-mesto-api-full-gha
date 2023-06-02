@@ -2,7 +2,7 @@ const allowedCors = [
   'https://milinova.nomoredomains.rocks',
   'http://milinova.nomoredomains.rocks',
   'https://localhost:3000',
-  'http://localhost:3000',
+  'http://localhost:3001',
 ];
 
 module.exports = (req, res, next) => {

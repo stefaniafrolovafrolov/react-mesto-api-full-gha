@@ -89,7 +89,7 @@ function getUserId(req, res, next) {
   User.findById(id)
 
     .then((user) => {
-      if (user) return res.send({ user });
+      if (user) return res.send(user);
 
       throw new NotFoundError('Пользователь с таким id не найден');
     })
@@ -108,7 +108,7 @@ function getCurrentUserInfo(req, res, next) {
 
   User.findById(userId)
     .then((user) => {
-      if (user) return res.send({ user });
+      if (user) return res.send(user);
 
       throw new NotFoundError('Пользователь с таким id не найден');
     })
@@ -138,7 +138,7 @@ function editProfileUserInfo(req, res, next) {
     },
   )
     .then((user) => {
-      if (user) return res.send({ user });
+      if (user) return res.send(user);
 
       throw new NotFoundError('Пользователь с таким id не найден');
     })
@@ -171,7 +171,7 @@ function updateProfileUserAvatar(req, res, next) {
     },
   )
     .then((user) => {
-      if (user) return res.send({ user });
+      if (user) return res.send(user);
 
       throw new NotFoundError('Пользователь с таким id не найден');
     })
