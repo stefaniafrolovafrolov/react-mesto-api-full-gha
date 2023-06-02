@@ -1,11 +1,8 @@
 const allowedCors = [
   'https://milinova.nomoredomains.rocks',
   'http://milinova.nomoredomains.rocks',
-  'https://api.milinova.nomoredomains.rocks',
-  'http://api.milinova.nomoredomains.rocks',
-  'localhost:3000',
+  'https://localhost:3000',
   'http://localhost:3000',
-  'http://localhost:3001',
 ];
 
 module.exports = (req, res, next) => {
@@ -13,6 +10,7 @@ module.exports = (req, res, next) => {
   const { method } = req; // Сохраняем тип запроса (HTTP-метод) в соответствующую переменную
   const requestHeaders = req.headers['access-control-request-headers'];
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
+  res.header('Access-Control-Allow-Credentials', true);
   // проверяем, что источник запроса есть среди разрешённых
   if (allowedCors.includes(origin)) {
     // устанавливаем заголовок, который разрешает браузеру запросы с этого источника

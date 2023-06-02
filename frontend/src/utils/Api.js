@@ -98,8 +98,17 @@ const api = new Api({
   baseUrl: "https://api.milinova.nomoredomains.rocks",
   headers: {
     "Content-Type": "application/json",
-    authorization: `Bearer ${localStorage.getItem("jwt")}`,
+     authorization: `Bearer ${localStorage.getItem("jwt")}`,
   },
 })
+
+/*const api = new Api({
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-24",
+  headers: {
+    authorization: "4efae440-5715-4ca9-8417-962742ac588e",
+    "Content-Type": "application/json",
+  },
+})*/
+
 
 export default api

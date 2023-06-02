@@ -26,7 +26,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [cards, setCards] = useState([])
-  const [dataLoadingError, setDataLoadingError] = useState("")
+
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [email, setEmail] = useState("")
   const history = useHistory()
@@ -35,22 +35,17 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
-    setIsLoading(true)
-    isLoggedIn &&
-      Promise.all([api.getRealUserInfo(), api.getInitialCards()])
-        .then(([profileInfo, cards]) => {
-          setCurrentUser(profileInfo)
-          setCards(cards)
-        })
-        .catch((error) => {
-          setDataLoadingError(`Что-то пошло не так... (${error})`)
-        })
-        .finally(() => setIsLoading(false))
-  }, [isLoggedIn])
+    Promise.all([api.getRealUserInfo(), api.getInitialCards()])
+      .then(([profileInfo, cards]) => {
+        setCurrentUser(profileInfo)
+        setCards(cards)
+      })
+      .catch((error) => console.log(`Ошибка: ${error}`))
+  }, [])
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt")
-    console.log(jwt)
+
     if (jwt) {
       auth
         .checkToken(jwt)
@@ -257,7 +252,6 @@ function App() {
               cards={cards}
               component={Main}
               isLoading={isLoading}
-              dataLoadingError={dataLoadingError}
             />
             <Route path="/sign-in">
               <Login onLogin={handleLoginSubmit} />
