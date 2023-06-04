@@ -46,16 +46,72 @@ class Api {
   }
 
   // Метод добавления новой карточки с сервера
-  async addNewCard(card) {
+  async addNewCard(data) {
     const response = await fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
-      body: JSON.stringify({ name: card.name, link: card.link }),
+      body: JSON.stringify({
+        name: data.name,
+        link: data.link,
+      }),
     })
+
     return this._handleSendingRequest(response)
   }
 
-  // Метод постановки лайка карточки
+  async changeLikeCardStatus(id, isLiked) {
+    if (!isLiked) {
+      const response = await fetch(`${this._baseUrl}/cards/${id}/likes`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          "Content-type": "application/json",
+        },
+      })
+      return this._handleSendingRequest(response)
+    } else {
+      const response = await fetch(`${this._baseUrl}/cards/${id}/likes`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          "Content-type": "application/json",
+        },
+      })
+      return this._handleSendingRequest(response)
+    }
+  }
+  //нормальная
+  /*  async changeLikeCardStatus(cardId, isLiked) {
+    if (isLiked) {
+      const response = await fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+        method: 'PUT',
+        headers: this._headers,
+      })
+      return this._handleSendingRequest(response);
+    } else {
+      const response = await fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+        method: 'DELETE',
+        headers: this._headers,
+      })
+      return this._handleSendingRequest(response);
+    }
+  }*/
+
+  /*changeLikeCardStatus(cardId, isLiked) {
+    if (isLiked) {
+      return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+        method: 'PUT',
+        headers: this._headers,
+      }).then((res) => this._handleSendingRequest(res));
+    } else {
+      return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+        method: 'DELETE',
+        headers: this._headers,
+      }).then((res) => this._handleSendingRequest(res));
+    }
+  }*/
+
+  /*// Метод постановки лайка карточки
   async addLike(cardId) {
     const response = await fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "PUT",
@@ -64,18 +120,19 @@ class Api {
     return this._handleSendingRequest(response)
   }
 
-  // Метод удаления карточки
-  async removeCard(cardId) {
-    const response = await fetch(`${this._baseUrl}/cards/${cardId}`, {
+  
+  // Метод постановки и снятия лайка с карточки
+  async removeLike(cardId) {
+    const response = await fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "DELETE",
       headers: this._headers,
     })
     return this._handleSendingRequest(response)
-  }
+  }*/
 
-  // Метод постановки и снятия лайка с карточки
-  async removeLike(cardId) {
-    const response = await fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+  // Метод удаления карточки
+  async removeCard(cardId) {
+    const response = await fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
     })
@@ -96,8 +153,8 @@ class Api {
 }
 
 const api = new Api({
-  /* baseUrl: "https://api.milinova.nomoredomains.rocks",*/
-  baseUrl: "http://localhost:3000",
+   baseUrl: "https://api.milinova.nomoredomains.rocks",
+ // baseUrl: "http://localhost:3000",
   headers: {
     "Content-Type": "application/json",
     authorization: `Bearer ${localStorage.getItem("jwt")}`,

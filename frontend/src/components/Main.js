@@ -57,10 +57,10 @@ function Main(props) {
         ></button>
       </section>
       <section className="elements">
-        {props.cards.data.map((card) => (
+        {props.cards.map((card) => (
           <Card
-            card={card}
             key={card._id}
+            card={card}
             onCardDelete={props.onDeletedCard}
             onCardClick={props.onCardClick}
             onCardLike={props.onCardLike}

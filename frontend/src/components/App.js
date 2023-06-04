@@ -34,8 +34,6 @@ function App() {
   const [isSuccess, setIsSuccess] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
- 
-
   useEffect(() => {
     const jwt = localStorage.getItem("jwt")
 
@@ -58,14 +56,14 @@ function App() {
   }, [history])
 
   useEffect(() => {
-    Promise.all([api.getRealUserInfo(), api.getInitialCards()])
-      .then(([profileInfo, cards]) => {
-        setCurrentUser(profileInfo)
-        setCards(cards)
-        
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`))
-  }, [])
+    isLoggedIn &&
+      Promise.all([api.getRealUserInfo(), api.getInitialCards()])
+        .then(([profileInfo, cards]) => {
+          setCurrentUser(profileInfo)
+          setCards(cards.data)
+        })
+        .catch((error) => console.log(`Ошибка: ${error}`))
+  }, [isLoggedIn])
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false)
@@ -79,7 +77,6 @@ function App() {
 
   function closeByOverlay(evt) {
     if (evt.target === evt.currentTarget) {
-      console.log()
       closeAllPopups()
     }
   }
@@ -130,20 +127,53 @@ function App() {
       .finally(() => setIsLoading(false))
   }
 
-  function handleAddPlaceSubmit(card) {
+  function handleAddPlaceSubmit(data) {
     setIsLoading(true)
     api
-      .addNewCard(card)
+      .addNewCard(data)
       .then((newCard) => {
-        setCards([newCard, ...cards])
-       /* console.log(cards)*/
+        setCards([newCard.data, ...cards])
+
         closeAllPopups()
+        /* console.log(Object.values(cards))*/
       })
       .catch((error) => console.log(`Ошибка: ${error}`))
       .finally(() => setIsLoading(false))
   }
 
-  function handleCardLike(card) {
+  /* function handleCardLike(card) {
+    const isLiked = card.likes.some((user) => user._id === currentUser._id)
+    console.log(card)
+    if (isLiked) {
+      api
+        .removeLike(card._id)
+        .then((newCard) => {
+          setCards(
+            cards.map((item) =>
+              item._id !== newCard.data._id ? item : newCard.data
+            )
+          )
+          console.log(newCard)
+          console.log(cards)
+        })
+        .catch((error) => console.log(`Ошибка: ${error}`))
+    } else {
+      api
+        .addLike(card._id)
+        .then((newCard) => {
+          setCards(
+            cards.map((item) =>
+              item._id !== newCard.data._id ? item : newCard.data
+            )
+          )
+          console.log(newCard)
+          console.log(cards)
+        })
+        .catch((error) => console.log(`Ошибка: ${error}`))
+    }
+  }*/
+
+  /* function handleCardLike(card) {
     const isLiked = card.likes.some((user) => user._id === currentUser._id)
 
     if (isLiked) {
@@ -165,6 +195,40 @@ function App() {
         )
         .catch((error) => console.log(`Ошибка: ${error}`))
     }
+  }*/
+  /* function handleCardLike(card) {
+   
+    const isLiked = card.likes.some((user) => user._id === currentUser._id)
+    console.log(card.likes)
+    
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+
+      .then((newCard) => {
+       
+        const newCards = cards.map((c) => (c._id === card._id ? newCard : c))
+        setCards(newCards)
+      })
+      .catch((err) => console.log(err))
+  }*/
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((user) => user._id === currentUser._id)
+
+    api
+      .changeLikeCardStatus(card._id, isLiked)
+      // console.log(card._id, isLiked)
+      .then((cardLike) => {
+        setCards((state) =>
+          state.map((user) => (user._id === card._id ? cardLike.data : user))
+        )
+       // console.log(cardLike.data)
+      })
+      .catch((err) => {
+        console.log(
+          `Ошибка в процессе добавления/снятия лайка карточки в галерее: ${err}`
+        )
+      })
   }
 
   function handleCardDelete(card) {

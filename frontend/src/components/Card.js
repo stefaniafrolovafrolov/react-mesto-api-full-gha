@@ -3,22 +3,20 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext"
 
 function Card(props) {
   const currentUser = useContext(CurrentUserContext)
-  const isLiked = props.card.likes.some((user) => user._id === currentUser._id)
+ const isLiked = props.card.likes.some((user) => user._id === currentUser._id)
+ 
+
   const likeButtonClassName = `element__like-button ${
     isLiked ? "element__like-button_active" : ""
   }`
-  const isOwner = props.card.owner._id === currentUser._id
-
-  /*const deleteButtonClassName = `element__trash ${
-    isOwner ? "element__trash_active" : ""
-  }`*/
+  // const isOwner = props.card.owner._id === currentUser._id
+  const isOwner = (props.card.owner._id || props.card.owner) === currentUser._id
 
   function handleLikeClick() {
     props.onCardLike(props.card)
   }
 
   function handleDeleteClick() {
-    console.log("click")
     props.onCardDelete(props.card)
     props.onConfirmationPopup(true)
   }
