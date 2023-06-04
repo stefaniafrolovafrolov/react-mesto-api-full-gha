@@ -60,7 +60,7 @@ function App() {
       Promise.all([api.getRealUserInfo(), api.getInitialCards()])
         .then(([profileInfo, cards]) => {
           setCurrentUser(profileInfo)
-          setCards(cards.data)
+          setCards(cards.data.reverse())
         })
         .catch((error) => console.log(`Ошибка: ${error}`))
   }, [isLoggedIn])
@@ -141,94 +141,16 @@ function App() {
       .finally(() => setIsLoading(false))
   }
 
-  /* function handleCardLike(card) {
-    const isLiked = card.likes.some((user) => user._id === currentUser._id)
-    console.log(card)
-    if (isLiked) {
-      api
-        .removeLike(card._id)
-        .then((newCard) => {
-          setCards(
-            cards.map((item) =>
-              item._id !== newCard.data._id ? item : newCard.data
-            )
-          )
-          console.log(newCard)
-          console.log(cards)
-        })
-        .catch((error) => console.log(`Ошибка: ${error}`))
-    } else {
-      api
-        .addLike(card._id)
-        .then((newCard) => {
-          setCards(
-            cards.map((item) =>
-              item._id !== newCard.data._id ? item : newCard.data
-            )
-          )
-          console.log(newCard)
-          console.log(cards)
-        })
-        .catch((error) => console.log(`Ошибка: ${error}`))
-    }
-  }*/
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((i) => i === currentUser._id)
 
-  /* function handleCardLike(card) {
-    const isLiked = card.likes.some((user) => user._id === currentUser._id)
-
-    if (isLiked) {
-      api
-        .removeLike(card._id)
-        .then((newCard) =>
-          setCards((state) =>
-            state.map((item) => (item._id === card._id ? newCard : item))
-          )
-        )
-        .catch((error) => console.log(`Ошибка: ${error}`))
-    } else {
-      api
-        .addLike(card._id)
-        .then((newCard) =>
-          setCards((state) =>
-            state.map((item) => (item._id === card._id ? newCard : item))
-          )
-        )
-        .catch((error) => console.log(`Ошибка: ${error}`))
-    }
-  }*/
-  /* function handleCardLike(card) {
-   
-    const isLiked = card.likes.some((user) => user._id === currentUser._id)
-    console.log(card.likes)
-    
-    api
-      .changeLikeCardStatus(card._id, !isLiked)
-
+    ;(isLiked ? api.removeLike(card._id) : api.addLike(card._id, true))
       .then((newCard) => {
-       
-        const newCards = cards.map((c) => (c._id === card._id ? newCard : c))
-        setCards(newCards)
+        setCards((state) =>
+          state.map((c) => (c._id === newCard.data._id ? newCard.data : c))
+        )
       })
       .catch((err) => console.log(err))
-  }*/
-
-  function handleCardLike(card) {
-    const isLiked = card.likes.some((user) => user._id === currentUser._id)
-
-    api
-      .changeLikeCardStatus(card._id, isLiked)
-      // console.log(card._id, isLiked)
-      .then((cardLike) => {
-        setCards((state) =>
-          state.map((user) => (user._id === card._id ? cardLike.data : user))
-        )
-       // console.log(cardLike.data)
-      })
-      .catch((err) => {
-        console.log(
-          `Ошибка в процессе добавления/снятия лайка карточки в галерее: ${err}`
-        )
-      })
   }
 
   function handleCardDelete(card) {
