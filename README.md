@@ -66,8 +66,8 @@
 
 ## Ссылки на проект
 
-- IP 51.250.120.183
+IP 51.250.120.183
 
-- Frontend https://milinova.nomoredomains.rocks
+Frontend https://milinova.nomoredomains.rocks
 
-- Backend https://api.milinova.nomoredomains.rocks
+Backend https://api.milinova.nomoredomains.rocks
