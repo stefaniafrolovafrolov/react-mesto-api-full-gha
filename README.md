@@ -62,7 +62,7 @@
 
 - https://code.s3.yandex.net/web-developer/checklists-pdf/new-program/checklist_15.pdf
 
-* - проект прошел проверку - код-ревью
+* - проект прошел код-ревью
 
 ## Ссылки на проект
 
